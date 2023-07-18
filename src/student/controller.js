@@ -3,7 +3,7 @@ const pool = require("../db");
 const queries = require("./queries");
 
 const addStudent = (req, res) => {
-  //pull data from request
+  //use when json sent in the post request
   const { name, email, age, dob } = req.body;
   // check if email exists
   pool.query(queries.checkEmailExists, [email], (error, results) => {
@@ -41,8 +41,18 @@ const getStudentById = (req, res) => {
   });
 };
 
+const deleteStudentById = (req, res) => {
+  //use when pulling id from url
+  const id = parseInt(req.params.id);
+  pool.query(queries.deleteStudentQuery, [id], (error, results) => {
+    if (error) throw error;
+    res.status(200).send(`student deleted with ID: ${id}`);
+  });
+};
+
 module.exports = {
   getStudents,
   getStudentById,
   addStudent,
+  deleteStudentById,
 };
