@@ -22,7 +22,14 @@ const getStudentById = (req, res) => {
 };
 
 const addStudent = (req, res) => {
+  //pull data from request
   const { name, email, age, dob } = req.body;
+  // check if email exists
+  pool.query(queries.checkEmailExists, [email], (error, results) => {
+    if (results.rows.length) {
+      res.send("Email already exists");
+    }
+  });
 };
 
 module.exports = {
