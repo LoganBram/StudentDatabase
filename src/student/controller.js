@@ -44,6 +44,14 @@ const getStudentById = (req, res) => {
 const deleteStudentById = (req, res) => {
   //use when pulling id from url
   const id = parseInt(req.params.id);
+  //check if student exists
+  pool.query(queries.studentById, [id], (error, results) => {
+    if (!results.rows.length) {
+      res.send("Student does not exist");
+    }
+  });
+
+  //delete student
   pool.query(queries.deleteStudentQuery, [id], (error, results) => {
     if (error) throw error;
     res.status(200).send(`student deleted with ID: ${id}`);
